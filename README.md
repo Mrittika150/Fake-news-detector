@@ -4,7 +4,7 @@ A machine learning web app that classifies news text as **Fake** or **Real** usi
 TF-IDF vectorization and Logistic Regression, with a Streamlit interface that shows
 a confidence score and the words that most influenced the prediction.
 
-**Live demo:** _add your deployed Streamlit link here once deployed_
+**Live demo:** [https://fake-news-detector-ukcuk6mvhyf9m94kgcwccg.streamlit.app](https://fake-news-detector-ukcuk6mvhyf9m94kgcwccg.streamlit.app)
 **Tech stack:** Python · Pandas · scikit-learn · TF-IDF · Logistic Regression · Streamlit
 
 ---
@@ -156,6 +156,11 @@ of misinformation. For a project you show to employers, swap in a real dataset:
 https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset
 
 It ships as `Fake.csv` and `True.csv`, ~23,000 and ~21,000 articles respectively.
+
+> **Note:** The raw dataset files and the generated `dataset/news.csv` are not
+> included in this repo (they exceed GitHub's file size limits). Download
+> `Fake.csv` and `True.csv` from the Kaggle link above, place them in `dataset/`,
+> then run `py dataset/convert_kaggle_dataset.py` followed by `py train.py`.
 Convert it into the format this project expects:
 
 ```python
@@ -193,6 +198,21 @@ project, since you can explain exactly why it made a decision (unlike a black-bo
 deep learning model).
 
 ---
+## Limitations
+
+This dataset is from 2016–2017, and most of its REAL articles are Reuters wire
+stories with a consistent style (e.g. starting with a location and "(Reuters)").
+As a result, the model partly learned "does this sound like a Reuters wire
+story" rather than purely detecting misinformation. It can misclassify:
+- Short headlines with little context
+- Real news about recent events not resembling 2016-17 Reuters style
+- Legitimate news written in a dramatic or informal tone
+
+This is a known, common pitfall in fake-news datasets and a good discussion
+point on why data quality/recency matters as much as model choice.
+
+
+ ---
 
 ## Deploying it publicly (free)
 
