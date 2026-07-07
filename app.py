@@ -12,6 +12,12 @@ import streamlit as st
 from predict import predict
 
 from PIL import Image
+import base64
+
+def icon_img(path, size=18):
+    with open(path, "rb") as f:
+        b64 = base64.b64encode(f.read()).decode()
+    return f'<img src="data:image/png;base64,{b64}" width="{size}" style="vertical-align:-3px; margin-right:4px;">'
 
 icon = Image.open("assets/icon.png")
 
@@ -41,7 +47,7 @@ st.markdown(
 
 col_icon, col_title = st.columns([1, 8])
 with col_icon:
-    st.image("assets/icon.png", width=60)
+    st.image("assets/icon.png", width=100)
 with col_title:
     st.title("Fake News Detector")
 st.write(
@@ -64,7 +70,7 @@ user_text = st.text_area(
     placeholder="Paste a real news headline or article here...",
 )
 
-analyze = st.button("🔍 Analyze", type="primary", use_container_width=True)
+analyze = st.button("Analyze", type="primary", use_container_width=True)
 
 if analyze:
     if not user_text.strip():
@@ -80,9 +86,15 @@ if analyze:
 
         st.markdown("### Result")
         if label == "FAKE":
-            st.markdown('<span class="fake-badge">⚠️ Likely FAKE</span>', unsafe_allow_html=True)
+            st.markdown(
+                f'<span class="fake-badge">{icon_img("assets/warning.png")}Likely FAKE</span>',
+                unsafe_allow_html=True,
+            )
         else:
-            st.markdown('<span class="real-badge">✅ Likely REAL</span>', unsafe_allow_html=True)
+            st.markdown(
+                f'<span class="real-badge">{icon_img("assets/check.png")}Likely REAL</span>',
+                unsafe_allow_html=True,
+            )
 
         st.markdown(f'<p class="big-font">Confidence: {confidence*100:.1f}%</p>', unsafe_allow_html=True)
         st.progress(confidence)
@@ -92,7 +104,7 @@ if analyze:
         col2.metric("P(REAL)", f"{probs.get('REAL', 0)*100:.1f}%")
 
         if top_words:
-            st.markdown("### 🔎 Words that influenced this prediction")
+            st.markdown(f'### {icon_img("assets/search.png", size=22)}Words that influenced this prediction', unsafe_allow_html=True)
             st.caption(
                 f"These words/phrases pushed the model toward predicting **{label}**."
             )
