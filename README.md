@@ -184,11 +184,6 @@ One of the most valuable lessons from this project was realizing that a model's 
 
 ---
 
-## Screenshots
-
-Screenshots of the application will be added here.
-
----
 
 ## Author
 
