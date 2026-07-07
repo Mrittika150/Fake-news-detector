@@ -11,9 +11,13 @@ import os
 import streamlit as st
 from predict import predict
 
+from PIL import Image
+
+icon = Image.open("assets/icon.png")
+
 st.set_page_config(
     page_title="Fake News Detector",
-    page_icon="📰",
+    page_icon=icon,
     layout="centered",
 )
 
@@ -35,7 +39,11 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("📰 Fake News Detector")
+col_icon, col_title = st.columns([1, 8])
+with col_icon:
+    st.image("assets/icon.png", width=60)
+with col_title:
+    st.title("Fake News Detector")
 st.write(
     "Paste a news headline or article below. The model (TF-IDF + Logistic "
     "Regression) will predict whether it's likely **Fake** or **Real**, "
@@ -50,26 +58,10 @@ if MODEL_MISSING:
     )
     st.stop()
 
-examples = {
-    "-- Choose an example --": "",
-    "Example: sensational claim": (
-        "SHOCKING: anonymous insider claims the government is secretly controlling "
-        "the weather. Mainstream media refuses to report this - wake up!"
-    ),
-    "Example: routine news": (
-        "The Ministry of Finance released a report on tax policy reforms. "
-        "Officials said further details would be shared in the coming weeks."
-    ),
-}
-
-choice = st.selectbox("Try an example, or write your own below:", list(examples.keys()))
-default_text = examples[choice]
-
 user_text = st.text_area(
     "News article / headline text",
-    value=default_text,
     height=180,
-    placeholder="Paste the news text here...",
+    placeholder="Paste a real news headline or article here...",
 )
 
 analyze = st.button("🔍 Analyze", type="primary", use_container_width=True)
@@ -109,8 +101,4 @@ if analyze:
         else:
             st.caption("No strongly influential words were found for this text.")
 
-st.divider()
-st.caption(
-    "⚠️ This is a machine learning demo trained on a limited dataset. "
-    "It should not be used as the sole basis for judging real-world news credibility."
-)
+
